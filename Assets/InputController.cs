@@ -14,13 +14,13 @@ public class InputController : MonoBehaviour
     public const float BottomLimit = -1f; // для того, чтобы возвращать улетевшее вниз экрана яблоко
 
     // Скорости скроллинга, для телефона, и для компа
-    #if UNITY_ANDROID
-        const float EdgeScrollingSpeed = 7f;
-        const float DragScrollingSpeed = 0.01f;
+    #if UNITY_STANDALONE 
+        const float EdgeScrollingSpeed = 4f;
+        const float DragScrollingSpeed = 0.0025f;
     #endif
-    #if UNITY_STANDALONE
-        const float EdgeScrollingSpeed = 0.5f;
-        const float DragScrollingSpeed = 0.0005f;
+    #if UNITY_ANDROID
+        const float EdgeScrollingSpeed = 1.5f;
+        const float DragScrollingSpeed = 0.001f;
     #endif
 
     void Start()
@@ -34,6 +34,7 @@ public class InputController : MonoBehaviour
         var cursorPosInGame = ray.GetPoint(0);
 
         //Проверка нажатия, если под курсором есть предмет - включается перетаскивание, если нет - включается скроллинг
+        //Я тестировал на компе, и для этого использовал функции мыши. На удивление - тач может работать теми же функциями.
         if (Input.GetMouseButtonDown(0))
         {
             
@@ -78,6 +79,7 @@ public class InputController : MonoBehaviour
             SetCameraXApplyConstraints(transform.position.x - delta.x * DragScrollingSpeed);
         }
 
+        //Выход по нажатию "назад"
         if (Input.GetKeyDown(KeyCode.Escape)) 
             Application.Quit();
     }
